@@ -5,16 +5,16 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="css/login.css" />
     <script src="https://kit.fontawesome.com/1cf483120b.js" crossorigin="anonymous"></script>
-    <title>Login Form</title>
+    <title>Login page</title>
 </head>
 
 <body>
     <div class="container">
         <div class="screen">
             <div class="screen__content">
-                <form class="login">
+                <form class="login" method="post" action="/login">
                     <div class="login__field">
                         <i class="login__icon fas fa-user"></i>
                         <input type="text" class="login__input" placeholder="User name / Email">
@@ -23,7 +23,7 @@
                         <i class="login__icon fas fa-lock"></i>
                         <input type="password" class="login__input" placeholder="Password">
                     </div>
-                    <button class="button login__submit">
+                    <button class="button login__submit" type="submit">
                         <span class="button__text">Log In Now</span>
                         <i class="button__icon fas fa-chevron-right"></i>
                     </button>

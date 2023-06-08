@@ -1,0 +1,27 @@
+<%- include('header'); -%>
+
+    <!-- <h1>Welcome, <%= userName %>
+    </h1> -->
+    <!-- <h2>Today List: </h2> -->
+
+    <div class="box" id="heading">
+        <h1 id="today-date"></h1>
+    </div>
+
+    <div class="box">
+        <% for(let item of list) { %>
+            <div class="item">
+                <input type="checkbox">
+                <p>
+                    <%=item%>
+                </p>
+            </div>
+            <% }%>
+
+                <form class="item" action="/home" method="post">
+                    <input type="text" name="newItem" placeholder="NewItem" autocomplete="off">
+                    <button type="submit" name="button">+</button>
+                </form>
+    </div>
+
+    <%- include('footer'); -%>
