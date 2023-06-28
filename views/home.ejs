@@ -9,14 +9,15 @@
     </div>
 
     <div class="box">
-        <% for(let item of list) { %>
+
+        <% list.forEach(item=> {%>
             <div class="item">
                 <input type="checkbox">
                 <p>
-                    <%=item%>
+                    <%=item.title%>
                 </p>
             </div>
-            <% }%>
+            <%}) %>
 
                 <form class="item" action="/home" method="post">
                     <input type="text" name="newItem" placeholder="NewItem" autocomplete="off">
