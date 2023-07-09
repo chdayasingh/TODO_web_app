@@ -1,0 +1,329 @@
+<%- include('partials/header'); -%>
+
+    <div class="d-flex flex-row">
+        <!-- Sidebar- left -->
+        <div class="d-flex flex-column flex-shrink-0 p-3 bg-light" style="width: 280px;">
+            <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none">
+                <svg class="bi me-2" width="40" height="32">
+                    <use xlink:href="#bootstrap"></use>
+                </svg>
+                <span class="fs-4">Welcome <%= displayName %></span>
+            </a>
+            <hr>
+            <ul class="nav nav-pills flex-column mb-auto">
+                <li class="nav-item">
+                    <a href="/tasks/today"
+                        class="nav-link link-dark <%= 'today' === listName ? 'active' : '' %> aria-current=" page">
+                        <svg class="fluentIcon ___12fm75w f1w7gpdv fez10in fg4l7m0" fill="currentColor"
+                            aria-hidden="true" width="20" height="20" viewBox="0 0 20 20"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M3 6.5a1 1 0 100-2 1 1 0 000 2zm3-1c0-.28.22-.5.5-.5h11a.5.5 0 010 1h-11a.5.5 0 01-.5-.5zm0 5c0-.28.22-.5.5-.5h11a.5.5 0 010 1h-11a.5.5 0 01-.5-.5zm.5 4.5a.5.5 0 000 1h11a.5.5 0 000-1h-11zm-2.5.5a1 1 0 11-2 0 1 1 0 012 0zm-1-4a1 1 0 100-2 1 1 0 000 2z"
+                                fill="currentColor"></path>
+                        </svg>
+                        Today
+                    </a>
+                </li>
+                <li>
+                    <a href="/tasks/important"
+                        class="nav-link link-dark <%= 'important' === listName ? 'active' : '' %>">
+                        <svg class="fluentIcon ___12fm75w f1w7gpdv fez10in fg4l7m0" fill="currentColor"
+                            aria-hidden="true" width="20" height="20" viewBox="0 0 20 20"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M3 6.5a1 1 0 100-2 1 1 0 000 2zm3-1c0-.28.22-.5.5-.5h11a.5.5 0 010 1h-11a.5.5 0 01-.5-.5zm0 5c0-.28.22-.5.5-.5h11a.5.5 0 010 1h-11a.5.5 0 01-.5-.5zm.5 4.5a.5.5 0 000 1h11a.5.5 0 000-1h-11zm-2.5.5a1 1 0 11-2 0 1 1 0 012 0zm-1-4a1 1 0 100-2 1 1 0 000 2z"
+                                fill="currentColor"></path>
+                        </svg>
+                        Important
+                    </a>
+                </li>
+                <li>
+                    <a href="/tasks/inbox" class="nav-link link-dark <%= 'inbox' === listName ? 'active' : '' %>">
+                        <svg class="fluentIcon ___12fm75w f1w7gpdv fez10in fg4l7m0" fill="currentColor"
+                            aria-hidden="true" width="20" height="20" viewBox="0 0 20 20"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M3 6.5a1 1 0 100-2 1 1 0 000 2zm3-1c0-.28.22-.5.5-.5h11a.5.5 0 010 1h-11a.5.5 0 01-.5-.5zm0 5c0-.28.22-.5.5-.5h11a.5.5 0 010 1h-11a.5.5 0 01-.5-.5zm.5 4.5a.5.5 0 000 1h11a.5.5 0 000-1h-11zm-2.5.5a1 1 0 11-2 0 1 1 0 012 0zm-1-4a1 1 0 100-2 1 1 0 000 2z"
+                                fill="currentColor"></path>
+                        </svg>
+                        Tasks
+                    </a>
+                </li>
+                <hr>
+            </ul>
+            <ul class="nav nav-pills flex-column mb-auto">
+                <% customListNames.forEach(list=> { %>
+                    <li class="nav-item">
+                        <a href="/tasks/<%= list %>" class="nav-link <%= list === listName ? 'active' : '' %>"
+                            aria-current="page">
+                            <svg class="fluentIcon ___12fm75w f1w7gpdv fez10in fg4l7m0" fill="currentColor"
+                                aria-hidden="true" width="20" height="20" viewBox="0 0 20 20"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M3 6.5a1 1 0 100-2 1 1 0 000 2zm3-1c0-.28.22-.5.5-.5h11a.5.5 0 010 1h-11a.5.5 0 01-.5-.5zm0 5c0-.28.22-.5.5-.5h11a.5.5 0 010 1h-11a.5.5 0 01-.5-.5zm.5 4.5a.5.5 0 000 1h11a.5.5 0 000-1h-11zm-2.5.5a1 1 0 11-2 0 1 1 0 012 0zm-1-4a1 1 0 100-2 1 1 0 000 2z"
+                                    fill="currentColor"></path>
+                            </svg>
+                            <%= list %>
+                        </a>
+                    </li>
+                    <% }) %>
+            </ul>
+            <hr>
+
+        </div>
+
+        <div class="container-fluid" id="main">
+            <!-- <h1>Welcome, <%=  %>
+    </h1> -->
+            <!-- <h2>Today List: </h2> -->
+
+            <div class="box" id="heading">
+                <%if (listName=="today" ) {%>
+                    <h1 id="today-date"></h1>
+                    <%} else{%>
+                        <h1 class="list-title">
+                            <%= listName %>
+                        </h1>
+                        <%}%>
+            </div>
+
+            <div class="box">
+                <% list.filter(item=> !item.status).forEach(item => { %>
+                    <div class="item">
+                        <form action="/tasks/<%= item.listName %>/status" method="post">
+                            <input type="hidden" name="taskId" value="<%= item._id %>">
+                            <input type="checkbox" onChange="this.form.submit()">
+                            <span>
+                                <%= item.name %>
+                            </span>
+                        </form>
+                        <form action="/tasks/<%= item.listName %>/delete" method="post">
+                            <button value="<%= item.id %>" name="deleteButton" type="submit" class="trash-item"
+                                aria-label="Delete task">
+                                <svg class="fluentIcon ___12fm75w f1w7gpdv fez10in fg4l7m0" fill="currentColor"
+                                    aria-hidden="true" width="20" height="20" viewBox="0 0 20 20"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path
+                                        d="M8.5 4h3a1.5 1.5 0 00-3 0zm-1 0a2.5 2.5 0 015 0h5a.5.5 0 010 1h-1.05l-1.2 10.34A3 3 0 0112.27 18H7.73a3 3 0 01-2.98-2.66L3.55 5H2.5a.5.5 0 010-1h5zM5.74 15.23A2 2 0 007.73 17h4.54a2 2 0 001.99-1.77L15.44 5H4.56l1.18 10.23zM8.5 7.5c.28 0 .5.22.5.5v6a.5.5 0 01-1 0V8c0-.28.22-.5.5-.5zM12 8a.5.5 0 00-1 0v6a.5.5 0 001 0V8z"
+                                        fill="currentColor"></path>
+                                </svg>
+                            </button>
+                        </form>
+                    </div>
+                    <% }) %>
+
+                        <p style="padding-left: 10px;">Completed</p>
+                        <div>
+                            <% list.filter(item=> item.status).forEach(item => { %>
+                                <div class="item">
+                                    <form action="/tasks/<%= item.listName %>/status" method="post">
+                                        <input type="hidden" name="taskId" value="<%= item._id %>">
+                                        <input type="checkbox" checked onChange="this.form.submit()">
+                                        <span>
+                                            <%= item.name %>
+                                        </span>
+                                    </form>
+                                    <form action="/tasks/<%= item.listName %>/delete" method="post">
+                                        <button value="<%= item.id %>" name="deleteButton" type="submit"
+                                            class="trash-item" aria-label="Delete task">
+                                            <svg class="fluentIcon ___12fm75w f1w7gpdv fez10in fg4l7m0"
+                                                fill="currentColor" aria-hidden="true" width="20" height="20"
+                                                viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                                <path
+                                                    d="M8.5 4h3a1.5 1.5 0 00-3 0zm-1 0a2.5 2.5 0 015 0h5a.5.5 0 010 1h-1.05l-1.2 10.34A3 3 0 0112.27 18H7.73a3 3 0 01-2.98-2.66L3.55 5H2.5a.5.5 0 010-1h5zM5.74 15.23A2 2 0 007.73 17h4.54a2 2 0 001.99-1.77L15.44 5H4.56l1.18 10.23zM8.5 7.5c.28 0 .5.22.5.5v6a.5.5 0 01-1 0V8c0-.28.22-.5.5-.5zM12 8a.5.5 0 00-1 0v6a.5.5 0 001 0V8z"
+                                                    fill="currentColor"></path>
+                                            </svg>
+                                        </button>
+                                    </form>
+                                </div>
+                                <% }) %>
+                        </div>
+
+                        <form class="item" action="/tasks/<%= listName %>" method="post">
+                            <input type="text" name="newItemName" placeholder="Add a task" autocomplete="off">
+                            <button type="submit" class="add-button" name="button">+</button>
+                        </form>
+            </div>
+
+            <div id="editPanel">
+                <!-- Edit form or content goes here -->
+                <!-- For example, a form to edit the item's details -->
+                <!-- <form method="POST" action="/<%= listName %>/edit">
+                <input type="text" name="editedItemName" placeholder="Edit item" />
+                <button type="submit">Save</button>
+            </form>
+        </div>
+        <hr>
+    </div> -->
+
+                <!-- Sidebar - right  (edit panel) -->
+                <!-- <div style="width: 280px;" class="edit-panel" role="complementary" aria-label="Details for task: Build CV">
+            <div data-is-scrollable="true" class="details-body">
+                <div class="detailHeader">
+                    <div class="detailHeader-titleWrapper"><span data-is-focusable="true"
+                            class="detailHeader-checkbox checkBox big" aria-label="Mark as completed" role="checkbox"
+                            aria-checked="false" tabindex="0"><svg
+                                class="fluentIcon ___12fm75w f1w7gpdv fez10in fg4l7m0" fill="currentColor"
+                                aria-hidden="true" width="24" height="24" viewBox="0 0 24 24"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M12 3.5a8.5 8.5 0 100 17 8.5 8.5 0 000-17zM2 12a10 10 0 1120 0 10 10 0 01-20 0z"
+                                    fill="currentColor"></path>
+                            </svg><svg class="fluentIcon checkBox-hover ___12fm75w f1w7gpdv fez10in fg4l7m0"
+                                fill="currentColor" aria-hidden="true" width="24" height="24" viewBox="0 0 24 24"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M12 2a10 10 0 110 20 10 10 0 010-20zm0 1.5a8.5 8.5 0 100 17 8.5 8.5 0 000-17zm-1.25 9.94l4.47-4.47a.75.75 0 011.13.98l-.07.08-5 5a.75.75 0 01-.98.07l-.08-.07-2.5-2.5a.75.75 0 01.98-1.13l.08.07 1.97 1.97 4.47-4.47-4.47 4.47z"
+                                    fill="currentColor"></path>
+                            </svg></span>
+                        <div class="detailHeader-title">
+                            <div class="editableContent" draggable="false">
+                                <div>
+                                    <div class="ms-TooltipHost root-42"><button name="taskTitleEditButton"
+                                            aria-label="Rename task" class="editableContent-editButton"><i
+                                                class="icon fontIcon ms-Icon ms-Icon--Edit iconSize-24"
+                                                aria-hidden="true"></i></button></div>
+                                </div>
+                                <div class="editableContent-display" title="Build CV"><span><span>Build</span><span>
+                                            CV</span></span></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="ms-TooltipHost root-42"><span class="importanceButton" data-is-focusable="true"
+                                    role="checkbox" aria-checked="false" aria-label="Mark task as important."
+                                    tabindex="0"><svg class="fluentIcon ___12fm75w f1w7gpdv fez10in fg4l7m0"
+                                        fill="currentColor" aria-hidden="true" width="24" height="24"
+                                        viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path
+                                            d="M10.79 3.1c.5-1 1.92-1 2.42 0l2.36 4.78 5.27.77c1.1.16 1.55 1.52.75 2.3l-3.82 3.72.9 5.25a1.35 1.35 0 01-1.96 1.42L12 18.86l-4.72 2.48a1.35 1.35 0 01-1.96-1.42l.9-5.25-3.81-3.72c-.8-.78-.36-2.14.75-2.3l5.27-.77 2.36-4.78zm1.2.94L9.75 8.6c-.2.4-.58.68-1.02.74l-5.05.74 3.66 3.56c.32.3.46.76.39 1.2l-.87 5.02 4.52-2.37c.4-.2.86-.2 1.26 0l4.51 2.37-.86-5.03c-.07-.43.07-.88.39-1.2l3.65-3.55-5.05-.74a1.35 1.35 0 01-1.01-.74L12 4.04z"
+                                            fill="currentColor"></path>
+                                    </svg></span></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="">
+                    <div class="section">
+                        <div class="section-item"><button class="section-innerClick" aria-label="Add to My Day">
+                                <div class="section-inner" aria-hidden="true">
+                                    <div class="section-icon"><svg
+                                            class="fluentIcon ___12fm75w f1w7gpdv fez10in fg4l7m0" fill="currentColor"
+                                            aria-hidden="true" width="20" height="20" viewBox="0 0 20 20"
+                                            xmlns="http://www.w3.org/2000/svg">
+                                            <path
+                                                d="M10 2c.28 0 .5.22.5.5v1a.5.5 0 01-1 0v-1c0-.28.22-.5.5-.5zm0 12a4 4 0 100-8 4 4 0 000 8zm0-1a3 3 0 110-6 3 3 0 010 6zm7.5-2.5a.5.5 0 000-1h-1a.5.5 0 000 1h1zM10 16c.28 0 .5.22.5.5v1a.5.5 0 01-1 0v-1c0-.28.22-.5.5-.5zm-6.5-5.5a.5.5 0 000-1H2.46a.5.5 0 000 1H3.5zm.65-6.35c.2-.2.5-.2.7 0l1 1a.5.5 0 11-.7.7l-1-1a.5.5 0 010-.7zm.7 11.7a.5.5 0 01-.7-.7l1-1a.5.5 0 01.7.7l-1 1zm11-11.7a.5.5 0 00-.7 0l-1 1a.5.5 0 00.7.7l1-1a.5.5 0 000-.7zm-.7 11.7a.5.5 0 00.7-.7l-1-1a.5.5 0 00-.7.7l1 1z"
+                                                fill="currentColor"></path>
+                                        </svg></div>
+                                    <div class="section-content" aria-hidden="true">
+                                        <div class="section-title">Add to My Day</div>
+                                    </div>
+                                </div>
+                            </button></div>
+                    </div>
+                    <div class="section">
+                        <div class="section-item"><button class="section-innerClick" aria-haspopup="true">
+                                <div class="section-inner">
+                                    <div class="section-icon"><svg
+                                            class="fluentIcon ___12fm75w f1w7gpdv fez10in fg4l7m0" fill="currentColor"
+                                            aria-hidden="true" width="20" height="20" viewBox="0 0 20 20"
+                                            xmlns="http://www.w3.org/2000/svg">
+                                            <path
+                                                d="M10 2a5.92 5.92 0 015.98 5.36l.02.22V11.4l.92 2.22a1 1 0 01.06.17l.01.08.01.13a1 1 0 01-.75.97l-.11.02L16 15h-3.5v.17a2.5 2.5 0 01-5 0V15H4a1 1 0 01-.26-.03l-.13-.04a1 1 0 01-.6-1.05l.02-.13.05-.13L4 11.4V7.57A5.9 5.9 0 0110 2zm1.5 13h-3v.15a1.5 1.5 0 001.36 1.34l.14.01c.78 0 1.42-.6 1.5-1.36V15zM10 3a4.9 4.9 0 00-4.98 4.38L5 7.6V11.5l-.04.2L4 14h12l-.96-2.3-.04-.2V7.61A4.9 4.9 0 0010 3z"
+                                                fill="currentColor"></path>
+                                        </svg></div>
+                                    <div class="section-content">
+                                        <div class="section-title"><span>Remind me</span></div>
+                                    </div>
+                                </div>
+                            </button></div>
+                        <div class="section-item"><button class="section-innerClick" aria-haspopup="true">
+                                <div class="section-inner">
+                                    <div class="section-icon"><svg
+                                            class="fluentIcon ___12fm75w f1w7gpdv fez10in fg4l7m0" fill="currentColor"
+                                            aria-hidden="true" width="20" height="20" viewBox="0 0 20 20"
+                                            xmlns="http://www.w3.org/2000/svg">
+                                            <path
+                                                d="M7 11a1 1 0 100-2 1 1 0 000 2zm1 2a1 1 0 11-2 0 1 1 0 012 0zm2-2a1 1 0 100-2 1 1 0 000 2zm1 2a1 1 0 11-2 0 1 1 0 012 0zm2-2a1 1 0 100-2 1 1 0 000 2zm4-5.5A2.5 2.5 0 0014.5 3h-9A2.5 2.5 0 003 5.5v9A2.5 2.5 0 005.5 17h9a2.5 2.5 0 002.5-2.5v-9zM4 7h12v7.5c0 .83-.67 1.5-1.5 1.5h-9A1.5 1.5 0 014 14.5V7zm1.5-3h9c.83 0 1.5.67 1.5 1.5V6H4v-.5C4 4.67 4.67 4 5.5 4z"
+                                                fill="currentColor"></path>
+                                        </svg></div>
+                                    <div class="section-content">
+                                        <div class="section-title"><span>Add due date</span></div>
+                                    </div>
+                                </div>
+                            </button></div>
+                        <div class="section-item"><span class="screenreader-only" id="repeat-label">Repeat</span><button
+                                class="section-innerClick" aria-labelledby="repeat-label"
+                                aria-describedby="repeat-description" aria-haspopup="true">
+                                <div class="section-inner">
+                                    <div class="section-icon"><svg
+                                            class="fluentIcon ___12fm75w f1w7gpdv fez10in fg4l7m0" fill="currentColor"
+                                            aria-hidden="true" width="20" height="20" viewBox="0 0 20 20"
+                                            xmlns="http://www.w3.org/2000/svg">
+                                            <path
+                                                d="M16.5 6.67a.5.5 0 01.3.1l.08.07.01.02A5 5 0 0113.22 15L13 15H6.7l1.65 1.65c.18.17.2.44.06.63l-.06.07a.5.5 0 01-.63.06l-.07-.06-2.5-2.5a.5.5 0 01-.06-.63l.06-.07 2.5-2.5a.5.5 0 01.76.63l-.06.07L6.72 14h.14L7 14h6a4 4 0 003.11-6.52.5.5 0 01.39-.81zm-4.85-4.02a.5.5 0 01.63-.06l.07.06 2.5 2.5.06.07a.5.5 0 010 .56l-.06.07-2.5 2.5-.07.06a.5.5 0 01-.56 0l-.07-.06-.06-.07a.5.5 0 010-.56l.06-.07L13.28 6h-.14L13 6H7a4 4 0 00-3.1 6.52c.06.09.1.2.1.31a.5.5 0 01-.9.3A4.99 4.99 0 016.77 5h6.52l-1.65-1.65-.06-.07a.5.5 0 01.06-.63z"
+                                                fill="currentColor"></path>
+                                        </svg></div>
+                                    <div class="section-content">
+                                        <div class="section-title"><span>Repeat</span></div>
+                                        <div class="section-description"></div>
+                                    </div>
+                                </div>
+                            </button></div>
+                    </div>
+                </div>
+                <div class="section no-border">
+                    <div class="section-item detailNote" aria-label="Note">
+                        <div class="richTextEditor multiLine">
+                            <div class="quill ">
+                                <div class="ql-container">
+                                    <div class="ql-editor ql-blank" data-gramm="false" contenteditable="true"
+                                        data-placeholder="Add note"
+                                        aria-label="Write a note. It will save automatically." tabindex="0">
+                                        <div><br></div>
+                                    </div>
+                                    <div class="ql-clipboard" contenteditable="true" tabindex="-1"></div>
+                                </div>
+                            </div>
+                            <div class="richTextEditor-footer">
+                                <div class="richTextEditor-lastEdited"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="detailFooter">
+                <div>
+                    <div class="ms-TooltipHost root-37"><button class="detailFooter-close"
+                            aria-label="Hide detail view"><svg class="fluentIcon ___12fm75w f1w7gpdv fez10in fg4l7m0"
+                                fill="currentColor" aria-hidden="true" width="20" height="20" viewBox="0 0 20 20"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M9.18 10.5l-1 .87a.5.5 0 10.66.76l2-1.75a.5.5 0 000-.76l-2-1.75a.5.5 0 10-.66.76l1 .87H5.5a.5.5 0 000 1h3.68zM16 16a2 2 0 002-2V6a2 2 0 00-2-2H4a2 2 0 00-2 2v8c0 1.1.9 2 2 2h12zm1-2a1 1 0 01-1 1h-3V5h3a1 1 0 011 1v8zm-5-9v10H4a1 1 0 01-1-1V6a1 1 0 011-1h8z"
+                                    fill="currentColor"></path>
+                            </svg></button>
+                        <div id="tooltip150"
+                            style="position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0px; border: 0px; overflow: hidden;">
+                            Hide detail view</div>
+                    </div>
+                </div>
+                <div class="detailFooter-info"><span class="date">Created on Tue, November 8, 2022</span></div>
+                <div>
+                    <div class="ms-TooltipHost root-37"><button class="detailFooter-trash" aria-label="Delete task"><svg
+                                class="fluentIcon ___12fm75w f1w7gpdv fez10in fg4l7m0" fill="currentColor"
+                                aria-hidden="true" width="20" height="20" viewBox="0 0 20 20"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M8.5 4h3a1.5 1.5 0 00-3 0zm-1 0a2.5 2.5 0 015 0h5a.5.5 0 010 1h-1.05l-1.2 10.34A3 3 0 0112.27 18H7.73a3 3 0 01-2.98-2.66L3.55 5H2.5a.5.5 0 010-1h5zM5.74 15.23A2 2 0 007.73 17h4.54a2 2 0 001.99-1.77L15.44 5H4.56l1.18 10.23zM8.5 7.5c.28 0 .5.22.5.5v6a.5.5 0 01-1 0V8c0-.28.22-.5.5-.5zM12 8a.5.5 0 00-1 0v6a.5.5 0 001 0V8z"
+                                    fill="currentColor"></path>
+                            </svg></button></div>
+                </div>
+            </div>
+            <div class="toast-container" aria-live="assertive"></div>
+        </div> -->
+
+            </div>
+
+
+
+
+
+            <%- include('partials/footer'); -%>

@@ -1,11 +1,37 @@
-const USER_NAME = "chdayasingh";
+// const USERNAME = "a@secure.com";
 
+// Third party packages
+require("dotenv").config();
 const express = require("express");
-const bodyParser = require("body-parser");
-const app = express();
+// const authRoutes = require("./routes/auth");
+const session = require("express-session");
 const mongoose = require("mongoose");
-const { Schema, model } = mongoose;
+const passport = require("passport");
+// const passportLocalMongoose = require("passport-local-mongoose");
+const GoogleStrategy = require("passport-google-oauth20").Strategy;
+// utility method for ease
+// const findOrCreate = require("mongoose-findorcreate");
 
+const app = express();
+const { Schema, model } = mongoose;
+const { User } = require("./models/user");
+
+// MiddleWare
+app.use(express.urlencoded({ extended: true }));
+app.use(express.static("public"));
+app.use(express.json());
+app.set("view engine", "ejs");
+
+// Set up session middleware
+app.use(
+  session({
+    secret: process.env.SECRET,
+    resave: false,
+    saveUninitialized: false,
+  })
+);
+
+// MongoDB connectivity
 mongoose
   .connect("mongodb://127.0.0.1:27017/todoDB", {
     useNewUrlParser: true,
@@ -13,80 +39,140 @@ mongoose
   .then(() => console.log("Database connected!"))
   .catch((err) => console.log(err));
 
-//support parsing of application/x-www-form-urlencoded post data
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(express.static("public"));
-app.set("view engine", "ejs");
+// Initialize Passport.js
+app.use(passport.initialize());
+app.use(passport.session());
 
-const listSchema = new Schema({
-  userName: String,
-  lists: Object,
+// Configure Passport.js local strategy
+passport.use(User.createStrategy());
+
+// use static serialize and deserialize of model for passport session support
+passport.serializeUser(function (user, done) {
+  process.nextTick(function () {
+    done(null, user.id);
+  });
 });
 
-const List = new model("List", listSchema);
-
-const dayaList = new List({
-  userName: "chdayasingh",
-  lists: {
-    today: [{ title: "Sample" }, { title: "sample2" }],
-    important: [{ title: "SampleImp" }],
-  },
+passport.deserializeUser(function (id, done) {
+  process.nextTick(async function () {
+    try {
+      const user = await User.findById(id);
+      done(null, user);
+    } catch (err) {
+      done(err, null);
+    }
+  });
 });
 
-// dayaList.save();
+passport.use(
+  new GoogleStrategy(
+    {
+      clientID: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+      callbackURL: "http://localhost:3000/auth/google/tasks",
+    },
+    function (accessToken, refreshToken, profile, cb) {
+      //   console.log(profile);
+      const email = profile.emails[0].value;
+      User.findOrCreate(
+        {
+          googleId: profile.id,
+          username: email,
+          displayName: profile.displayName,
+        },
+        function (err, user) {
+          return cb(err, user);
+        }
+      );
+    }
+  )
+);
+
+// its important to use this after passport config
+const tasksRoutes = require("./routes/tasks");
+app.use("/tasks", tasksRoutes);
 
 app.get("/", (req, res) => {
-  res.sendFile(__dirname + "/index.html");
+  if (req.isAuthenticated()) {
+    return res.redirect("/tasks/today");
+  }
+  res.render("home");
 });
 
-app.get("/login", (req, res) => {
-  res.sendFile(__dirname + "/login.html");
-});
-app.post("/login", (req, res) => {
-  res.redirect("/home");
-});
+app
+  .route("/register")
+  .get((req, res) => {
+    res.render("register");
+  })
+  .post((req, res) => {
+    User.register(
+      {
+        username: req.body.username,
+        displayName: req.body.displayName,
+        tasks: [],
+      },
+      req.body.password,
+      function (err, user) {
+        if (err) {
+          console.log(err);
+          res.redirect("/register");
+        } else {
+          passport.authenticate("local")(req, res, function () {
+            res.redirect("/tasks/today");
+          });
+        }
+      }
+    );
+  });
 
-app.get("/home", (req, res) => {
-  List.findOne({ userName: "chdayasingh" })
-    .then((obj) => {
-      res.render("home", { userName: obj.userName, list: obj.lists.today });
-      // { userName: obj.userName, list: obj.lists.today }
-    })
-    .catch((err) => {
-      console.error(err);
+app
+  .route("/login")
+  .get((req, res) => {
+    res.render("login");
+  })
+  .post((req, res) => {
+    const user = new User({
+      username: req.body.username,
+      password: req.body.password,
     });
+    req.login(user, function (err) {
+      if (err) {
+        console.log(err);
+      } else {
+        passport.authenticate("local")(req, res, function () {
+          res.redirect("/tasks/today");
+        });
+      }
+    });
+  });
+
+app.get("/auth/google", (req, res, next) => {
+  //   console.log("in /auth/google");
+  passport.authenticate("google", { scope: ["openid", "email", "profile"] })(
+    req,
+    res,
+    next
+  );
 });
 
-app.post("/home", (req, res) => {
-  const newItem = req.body.newItem;
-  addNewObjectToList("today", newItem);
+app.get(
+  "/auth/google/tasks",
+  passport.authenticate("google", { failureRedirect: "/login" }),
+  function (req, res) {
+    // Successful authentication, redirect to secrets.
+    res.redirect("/tasks/today");
+  }
+);
 
-  res.redirect("/home");
+app.get("/logout", function (req, res) {
+  req.logout(function (err) {
+    if (err) {
+      return next(err);
+    }
+    res.redirect("/");
+  });
 });
 
 app.listen(3000, function () {
   console.log("Server started on port 3000");
 });
-
-async function addNewObjectToList(listName, item) {
-  try {
-    const updatedList = await List.findOneAndUpdate(
-      { userName: USER_NAME },
-      { $push: { "lists.today": { title: item } } },
-      { new: true }
-    );
-    console.log(updatedList);
-  } catch (error) {
-    console.error(error);
-  }
-}
-
-// // sample users
-// const users = [
-//   { id: 1, userName: "Daya", list: [] },
-//   { id: 2, userName: "Sakhil", list: [] },
-// ];
-
-// // randomly picking a user obj
-// const randomIndex = Math.floor(Math.random() * users.length);
-// const user = users[randomIndex];

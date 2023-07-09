@@ -1,28 +1,14 @@
-<%- include('header'); -%>
+<%- include('partials/outer-header') %>
 
-    <!-- <h1>Welcome, <%= userName %>
-    </h1> -->
-    <!-- <h2>Today List: </h2> -->
+    <div class="jumbotron centered">
+        <div class="container">
+            <h1 class="display-3">Todo</h1>
+            <p class="lead">Increase your Productivity</p>
+            <hr>
+            <a class="btn btn-light btn-lg" href="/register" role="button">Register</a>
+            <a class="btn btn-dark btn-lg" href="/login" role="button">Login</a>
 
-    <div class="box" id="heading">
-        <h1 id="today-date"></h1>
+        </div>
     </div>
 
-    <div class="box">
-
-        <% list.forEach(item=> {%>
-            <div class="item">
-                <input type="checkbox">
-                <p>
-                    <%=item.title%>
-                </p>
-            </div>
-            <%}) %>
-
-                <form class="item" action="/home" method="post">
-                    <input type="text" name="newItem" placeholder="NewItem" autocomplete="off">
-                    <button type="submit" name="button">+</button>
-                </form>
-    </div>
-
-    <%- include('footer'); -%>
+    <%- include('partials/outer-footer') %>
