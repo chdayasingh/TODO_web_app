@@ -1,14 +1,17 @@
 <%- include('partials/outer-header') %>
 
-    <div class="jumbotron centered">
+    <div class="hero-section">
         <div class="container">
-            <h1 class="display-3">Todo</h1>
-            <p class="lead">Increase your Productivity</p>
-            <hr>
-            <a class="btn btn-light btn-lg" href="/register" role="button">Register</a>
-            <a class="btn btn-dark btn-lg" href="/login" role="button">Login</a>
-
+            <h1 class="hero-title">Welcome to Todo</h1>
+            <p class="hero-subtitle">To Do gives you focus, from work to play.</p>
+            <img class="hero-image" src="/images/To-Do_icon.png" alt="Todo Image">
+            <p class="hero-description">Increase your Productivity</p>
+            <div class="hero-buttons">
+                <a class="btn btn-outline-primary me-2" href="/login" role="button">Login</a>
+                <a class="btn btn-primary" href="/register" role="button">Register</a>
+            </div>
         </div>
     </div>
+
 
     <%- include('partials/outer-footer') %>

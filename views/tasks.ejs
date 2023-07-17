@@ -7,7 +7,9 @@
                 <svg class="bi me-2" width="40" height="32">
                     <use xlink:href="#bootstrap"></use>
                 </svg>
-                <span class="fs-4">Welcome <%= displayName %></span>
+                <span class="fs-4">Welcome, <span>
+                        <%= displayName %>
+                    </span></span>
             </a>
             <hr>
             <ul class="nav nav-pills flex-column mb-auto">
@@ -73,10 +75,6 @@
         </div>
 
         <div class="container-fluid" id="main">
-            <!-- <h1>Welcome, <%=  %>
-    </h1> -->
-            <!-- <h2>Today List: </h2> -->
-
             <div class="box" id="heading">
                 <%if (listName=="today" ) {%>
                     <h1 id="today-date"></h1>
@@ -89,7 +87,7 @@
 
             <div class="box">
                 <% list.filter(item=> !item.status).forEach(item => { %>
-                    <div class="item">
+                    <div class="item task">
                         <form action="/tasks/<%= item.listName %>/status" method="post">
                             <input type="hidden" name="taskId" value="<%= item._id %>">
                             <input type="checkbox" onChange="this.form.submit()">
@@ -115,7 +113,7 @@
                         <p style="padding-left: 10px;">Completed</p>
                         <div>
                             <% list.filter(item=> item.status).forEach(item => { %>
-                                <div class="item">
+                                <div class="item task">
                                     <form action="/tasks/<%= item.listName %>/status" method="post">
                                         <input type="hidden" name="taskId" value="<%= item._id %>">
                                         <input type="checkbox" checked onChange="this.form.submit()">
@@ -145,19 +143,11 @@
                         </form>
             </div>
 
-            <div id="editPanel">
-                <!-- Edit form or content goes here -->
-                <!-- For example, a form to edit the item's details -->
-                <!-- <form method="POST" action="/<%= listName %>/edit">
-                <input type="text" name="editedItemName" placeholder="Edit item" />
-                <button type="submit">Save</button>
-            </form>
         </div>
-        <hr>
-    </div> -->
 
-                <!-- Sidebar - right  (edit panel) -->
-                <!-- <div style="width: 280px;" class="edit-panel" role="complementary" aria-label="Details for task: Build CV">
+        <!-- Sidebar - right  (edit panel) -->
+        <div id="editPanel" style="width: 280px;" class="edit-panel hidden" role="complementary"
+            aria-label="Details for task: Build CV">
             <div data-is-scrollable="true" class="details-body">
                 <div class="detailHeader">
                     <div class="detailHeader-titleWrapper"><span data-is-focusable="true"
@@ -318,12 +308,8 @@
                 </div>
             </div>
             <div class="toast-container" aria-live="assertive"></div>
-        </div> -->
-
-            </div>
+        </div>
 
 
 
-
-
-            <%- include('partials/footer'); -%>
+        <%- include('partials/footer'); -%>
